@@ -100,15 +100,21 @@ share() { local share="$1" path="$2" browsable="${3:-yes}" ro="${4:-yes}" \
                 guest="${5:-yes}" users="${6:-""}" admins="${7:-""}" \
                 writelist="${8:-""}" comment="${9:-""}" file=/etc/samba/smb.conf
     sed -i "/\\[$share\\]/,/^\$/d" $file
+    echo "" >>$file
     echo "[$share]" >>$file
     echo "   path = $path" >>$file
     echo "   browsable = $browsable" >>$file
     echo "   read only = $ro" >>$file
     echo "   guest ok = $guest" >>$file
-    echo -n "   veto files = /._*/.apdisk/.AppleDouble/.DS_Store/" >>$file
-    echo -n ".TemporaryItems/.Trashes/desktop.ini/ehthumbs.db/" >>$file
-    echo "Network Trash Folder/Temporary Items/Thumbs.db/" >>$file
-    echo "   delete veto files = yes" >>$file
+    echo "   available = yes" >>$file
+    echo "   create mask = 0775" >>$file
+    echo "   directory mask = 0775" >>$file
+    echo "" >>$file
+
+    # echo -n "   veto files = /._*/.apdisk/.AppleDouble/.DS_Store/" >>$file
+    # echo -n ".TemporaryItems/.Trashes/desktop.ini/ehthumbs.db/" >>$file
+    # echo "Network Trash Folder/Temporary Items/Thumbs.db/" >>$file
+    # echo "   delete veto files = yes" >>$file
     [[ ${users:-""} && ! ${users:-""} =~ all ]] &&
         echo "   valid users = $(tr ',' ' ' <<< $users)" >>$file
     [[ ${admins:-""} && ! ${admins:-""} =~ none ]] &&
