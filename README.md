@@ -1,4 +1,4 @@
-[![logo](https://raw.githubusercontent.com/dperson/samba/master/logo.jpg)](https://www.samba.org)
+[![logo](https://raw.githubusercontent.com/mangnoppa/samba/master/logo.jpg)](https://www.samba.org)
 
 # Samba
 
@@ -12,25 +12,27 @@ Windows, OS/2, Linux and many others.
 
 # How to use this image
 
-By default there are no shares configured, additional ones can be added. You may want to add your user the group docker to be capable of running docker without `sudo`.
+By default there are no shares configured, additional ones can be added. You may want to add your user the group `docker` to be capable of running docker without `sudo`.
 
     sudo usermod -aG docker $USER
 
 Then reboot or logout and -in again.
 
+The image is **not** hosted on [dockerhub](https://hub.docker.com/). In order to use it you need to execute `make` inside the project's folder.
+
 ## Hosting a Samba instance
 
-    docker run -it -p 139:139 -p 445:445 -d dperson/samba
+    docker run -it -p 139:139 -p 445:445 -d samba
 
 OR set local storage:
 
     docker run -it --name samba -p 139:139 -p 445:445 \
                 -v /path/to/directory:/mount \
-                -d dperson/samba
+                -d samba
 
 ## Configuration
 
-    docker run -it --rm dperson/samba -h
+    docker run -it --rm samba -h
     Usage: samba.sh [-opt] [command]
     Options (fields in '[]' are optional, '<>' are required):
         -h          This help
@@ -97,7 +99,7 @@ will also want to expose port 137 and 138 with `-p 137:137/udp -p 138:138/udp`.
 **NOTE2**: there are reports that `-n` and `NMBD` only work if you have the
 container configured to use the hosts network stack.
 
-**NOTE3**: Unlike the dperson/samba container, this image contains a prebuilt `smb.conf` which runs my [Banana Pi](http://www.banana-pi.org/m1.html) right now. To use another prebuilt `smb.conf` just copy/modify the file `./additional_files/smb.conf`
+**NOTE3**: Unlike the dperson/samba container, this image contains a prebuilt `smb.conf` which runs my [Banana Pi](http://www.banana-pi.org/m1.html) right now. To use another prebuilt `smb.conf` just replace the file `./additional_files/smb.conf` or modify it.
 
 ## Examples
 
@@ -106,11 +108,11 @@ Any of the commands can be run at creation with `docker run` or later with
 
 ### Setting the Timezone
 
-    docker run -it -e TZ=EST5EDT -p 139:139 -p 445:445 -d dperson/samba
+    docker run -it -e TZ=EST5EDT -p 139:139 -p 445:445 -d samba
 
 ### Start an instance creating users and shares:
 
-    docker run -it -p 139:139 -p 445:445 -d dperson/samba \
+    docker run -it -p 139:139 -p 445:445 -d samba \
                 -u "example1;badpass" \
                 -u "example2;badpass" \
                 -s "public;/share" \
@@ -126,7 +128,7 @@ Any of the commands can be run at creation with `docker run` or later with
         -p 138:138/udp \
         -p 139:139 \
         -p 445:445 \
-        -d dperson/samba \
+        -d samba \
             -n \
             -u "example1;badpass" \
             -s "public;/share" \
