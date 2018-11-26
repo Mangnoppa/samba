@@ -97,6 +97,8 @@ will also want to expose port 137 and 138 with `-p 137:137/udp -p 138:138/udp`.
 **NOTE2**: there are reports that `-n` and `NMBD` only work if you have the
 container configured to use the hosts network stack.
 
+**NOTE3**: Unlike the dperson/samba container, this image contains a prebuilt `smb.conf` which runs my [Banana Pi](http://www.banana-pi.org/m1.html) right now. To use another prebuilt `smb.conf` just copy/modify the file `./additional_files/smb.conf`
+
 ## Examples
 
 Any of the commands can be run at creation with `docker run` or later with
@@ -133,7 +135,11 @@ Any of the commands can be run at creation with `docker run` or later with
 
 # User Feedback
 
+## Credits
+
+Credits go to [David Personette](https://github.com/dperson).
+
 ## Issues
 
 If you have any problems with or questions about this image, please contact me
-through a [GitHub issue](https://github.com/dperson/samba/issues).
+through a [GitHub issue](https://github.com/Mangnoppa/samba/issues).
