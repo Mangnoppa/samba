@@ -12,21 +12,25 @@ Windows, OS/2, Linux and many others.
 
 # How to use this image
 
-By default there are no shares configured, additional ones can be added.
+By default there are no shares configured, additional ones can be added. You may want to add your user the group docker to be capable of running docker without `sudo`.
+
+    sudo usermod -aG docker $USER
+
+Then reboot or logout and -in again.
 
 ## Hosting a Samba instance
 
-    sudo docker run -it -p 139:139 -p 445:445 -d dperson/samba
+    docker run -it -p 139:139 -p 445:445 -d dperson/samba
 
 OR set local storage:
 
-    sudo docker run -it --name samba -p 139:139 -p 445:445 \
+    docker run -it --name samba -p 139:139 -p 445:445 \
                 -v /path/to/directory:/mount \
                 -d dperson/samba
 
 ## Configuration
 
-    sudo docker run -it --rm dperson/samba -h
+    docker run -it --rm dperson/samba -h
     Usage: samba.sh [-opt] [command]
     Options (fields in '[]' are optional, '<>' are required):
         -h          This help
@@ -100,17 +104,32 @@ Any of the commands can be run at creation with `docker run` or later with
 
 ### Setting the Timezone
 
-    sudo docker run -it -e TZ=EST5EDT -p 139:139 -p 445:445 -d dperson/samba
+    docker run -it -e TZ=EST5EDT -p 139:139 -p 445:445 -d dperson/samba
 
 ### Start an instance creating users and shares:
 
-    sudo docker run -it -p 139:139 -p 445:445 -d dperson/samba \
+    docker run -it -p 139:139 -p 445:445 -d dperson/samba \
                 -u "example1;badpass" \
                 -u "example2;badpass" \
                 -s "public;/share" \
                 -s "users;/srv;no;no;no;example1,example2" \
                 -s "example1 private share;/example1;no;no;no;example1" \
                 -s "example2 private share;/example2;no;no;no;example2"
+
+### Use hosts network stack as mentioned in Note2
+
+    docker run -it \
+        --network host \
+        -p 137:137/udp \
+        -p 138:138/udp \
+        -p 139:139 \
+        -p 445:445 \
+        -d dperson/samba \
+            -n \
+            -u "example1;badpass" \
+            -s "public;/share" \
+            -s "users;/srv;no;no;no;example1,example2" \
+            -s "example1 private share;/example1;no;no;no;example1" \
 
 # User Feedback
 
