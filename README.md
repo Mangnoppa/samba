@@ -12,7 +12,9 @@ Windows, OS/2, Linux and many others.
 
 # How to use this image
 
-By default there are no shares configured, additional ones can be added. You may want to add your user the group `docker` to be capable of running docker without `sudo`.
+By default there are no shares configured, additional ones can be added.
+
+You may want to add your user to the group `docker` to be capable of running docker without `sudo`.
 
     sudo usermod -aG docker $USER
 
